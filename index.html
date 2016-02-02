@@ -6,15 +6,28 @@
 </head>
 <script type=text/javascript>
 
-var nouns = ["The 1%","Capitalism","truth","lies","world","blockchain","paradigm","patriarchy","narrative","government","system","source code","blockchain","hash",Math.floor(Math.random() * 100) + "%","gender"];
+var grammar = {
+	"sentence": ['<verb> the <noun>'],
+	"tens": ['', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+	"ones": ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+	"percentage": ["<tens><ones>%"],
+	"noun": ["1%","Capitalism","truth","lies","world","blockchain","paradigm","patriarchy","narrative","government","system","source code","blockchain","hash", "<percentage>","gender"],
+	"verb": ["download","blockchain","smash","eat","hack","debate","distribute","decentralize","centralize","topple","fight","hammer","reprogram","subvert"]
+}
 
-var verbs = ["download","blockchain","smash","eat","hack","debate","distribute","decentralize","centralize","topple","fight","hammer","reprogram","subvert"];
+function expand(formula, grammar) { 
+	while (m = formula.match(/<([^>]+)>/)) {
+		var choices = grammar[m[1]];
+		var aChoice = choices[Math.floor(Math.random()*choices.length)]
+		formula = formula.replace(m[0], aChoice)
+	}
+	return formula;
+
+}
 
 function changeMessage() {
-	var verb = verbs[Math.floor(Math.random()*verbs.length)];
-	var noun = nouns[Math.floor(Math.random()*nouns.length)];
 	
-	var phrase = verb + " the " + noun;
+	var phrase = expand("<sentence>", grammar);
 	phrase = phrase.toUpperCase();
 
 	document.getElementById("message").innerHTML= "<h1>" + phrase + "</h1>";
